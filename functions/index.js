@@ -1,46 +1,24 @@
-/**
- * Copyright 2017 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 'use strict';
-
-// [START all]
-// [START import]
-// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
-
-// The Firebase Admin SDK to access the Cloud Firestore.
 const admin = require('firebase-admin');
 admin.initializeApp();
-// [END import]
 
-// [START addMessage]
-// Take the text parameter passed to this HTTP endpoint and insert it into 
-// Cloud Firestore under the path /messages/:documentId/original
-// [START addMessageTrigger]
 exports.addMessage = functions.https.onRequest(async (req, res) => {
-// [END addMessageTrigger]
-    // Grab the text parameter.
     const original = req.query.text;
-    // [START adminSdkAdd]
-    // Push the new message into Cloud Firestore using the Firebase Admin SDK.
     const writeResult = await admin.firestore().collection('messages').add({ original: original });
-    // Send back a message that we've succesfully written the message
     res.json({ result: `Message with ID: ${writeResult.id} added.` });
-    // [END adminSdkAdd]
 });
-// [END addMessage]
+
+
+exports.doTransaction = functions.https.onRequest(async (req, res) => {
+    if (req.method !== 'POST') res.status(404).send('Not Found');
+    const messages = await admin.firestore().collection('messages').get();
+    const result = [];
+    messages.forEach(doc => {
+        result.push(doc.data());
+    });
+    res.json(result);
+});
 
 exports.getMessages = functions.https.onRequest(async (req, res) => {
     const messages = await admin.firestore().collection('messages').get();
@@ -50,6 +28,20 @@ exports.getMessages = functions.https.onRequest(async (req, res) => {
     });
     res.json(result);
 });
+
+
+exports.createCustomUser = function () {
+    ref.onAuth(function (authData) {
+        if (authData && isNewUser) {
+            // save the user's profile into Firebase so we can list users,
+            // use them in Security and Firebase Rules, and show profiles
+            ref.child("users").child(authData.uid).set({
+                provider: authData.provider,
+                name: getName(authData)
+            });
+        }
+    });
+};
 
 // [START makeUppercase]
 // Listens for new messages added to /messages/:documentId/original and creates an
@@ -69,5 +61,3 @@ exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
         return snap.ref.set({ uppercase }, { merge: true });
         // [END makeUppercaseBody]
     });
-// [END makeUppercase]
-// [END all]

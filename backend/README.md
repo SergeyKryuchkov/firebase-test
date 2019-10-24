@@ -10,11 +10,7 @@ npm install
 npm run serve
 ```
 ### Environment
-Create .env file in the root of the project with DB uri to connect postgres
-
-#### App setup
-- AUTO_JOBS: \[TRUE/FALSE] auto start jobs
-- SKIP_JOBS: list of jobs filenames to skip
+Create .env file in the root of the project with DB uri to connect postgres and firebase credentials. Check the .env.example file.
 
 #### Database credentials
 - DATABASE_URL = postgres://\[user]:\[password]@\[host]:\[port]/\[db_name]

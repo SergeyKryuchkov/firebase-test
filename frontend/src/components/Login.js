@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Card, CardTitle, Label, FormGroup, Button } from "reactstrap";
-import { NavLink } from "react-router-dom";
+    import { NavLink } from "react-router-dom";
 
 import { NotificationManager } from "../../components/common/react-notifications";
 import { Formik, Form, Field } from "formik";
