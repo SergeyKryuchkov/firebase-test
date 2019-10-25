@@ -4,7 +4,10 @@ const admin = require("firebase-admin");
 const cors = require("cors");
 const express = require("express");
 const helpers_1 = require("./helpers");
+const database = require('./database');
 exports.app = express();
+exports.app.set('models', database.models);
+exports.app.set('sequelize', database.sequelize);
 exports.app.use(cors({ origin: '*' }));
 exports.app.use(helpers_1.helpers.auth.authenticateUser);
 //// Initialize Firebase ////

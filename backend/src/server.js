@@ -4,7 +4,6 @@ process.env['NODE_CONFIG_DIR'] = __dirname + '/config/';
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const bodyParser = require('body-parser');
 const klawSync = require('klaw-sync');
 const config = require('config');
 
@@ -14,8 +13,6 @@ const root = __dirname;
 
 
 /* globals */
-models = require('./database').models;
-
 app.set('models', database.models);
 app.set('sequelize', database.sequelize);
 
@@ -27,8 +24,8 @@ app.use(express.static(path.join(root, '../client/www/dist')));
 /* set CORS */
 app.use(cors({origin: '*'}));
 require('./swagger')(app);
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
     console.info(`${new Date()}: [${req.method}] ${req.url}`);

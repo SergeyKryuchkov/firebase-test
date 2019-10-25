@@ -2,11 +2,16 @@ import * as admin from 'firebase-admin';
 import * as cors from 'cors';
 import * as express from 'express';
 import {helpers} from './helpers';
+const database = require('./database');
 
 export const app = express();
 
+app.set('models', database.models);
+app.set('sequelize', database.sequelize);
+
 app.use(cors({origin: '*'}));
 app.use(helpers.auth.authenticateUser);
+
 
 //// Initialize Firebase ////
 const adminConfig = JSON.parse(process.env.FIREBASE_CONFIG);
