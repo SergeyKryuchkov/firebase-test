@@ -1,0 +1,6 @@
+{
+  "sqldatabase": {
+    "url": "postgres://postgres:user@localhost:5432/firebase-test",
+    "logging": "true"
+  }
+}
