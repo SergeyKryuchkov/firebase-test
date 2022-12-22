@@ -24,7 +24,7 @@
     "firebase": "^7.2.1",
     "firebase-admin": "^8.6.1",
     "firebase-functions": "^3.3.0",
-    "jsonwebtoken": "^7.4.3",
+    "jsonwebtoken": "^9.0.0",
     "klaw-sync": "^3.0.2",
     "lodash": "^4.17.4",
     "moment": "^2.24.0",
